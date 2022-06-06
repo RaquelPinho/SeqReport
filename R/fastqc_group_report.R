@@ -28,7 +28,7 @@ fastqc_group_report <- function( path, info = "all", stats = TRUE, samples = NUL
 
   # creating the list of files to be used
   l_files <- list.files(path = path, pattern = ".html")
-  if (length(l_files) = 0) {
+  if (length(l_files) == 0) {
     stop("There is no .html file in the directory!")
   }
   # Getting the name of the samples
@@ -53,25 +53,20 @@ fastqc_group_report <- function( path, info = "all", stats = TRUE, samples = NUL
       xml2::xml_find_all("//div[@class='summary']//a/text()") %>%
       xml2::xml_text()
     # creating a table
-    table_info <- res_stats %>%
-                   as.data.frame() %>%
-                   t()
-    table_info <- cbind(Sample = samples[i], table_info)
+    table_info <- res_info %>%
+                  t() %>%
+                  dplyr::as_tibble()
+    table_info <- cbind("Sample" = samples[i], table_info)
     # getting the stats information
     if (stats == FALSE) {
       table_stats <- table_info
     } else {
-
+     table_stats <- read_html_table(file = file.path(path,l_files[i]), info = "stats")
+     over_rep <- unique(XML::readHTMLTable(file.path(path,l_files[i]))[[2]]['Possible Source'])
+     table_stats <- table_info %>%
+                    dplyr::left_join(table, by = c('Sample' = "Filename")) %>%
+                    cbind(over_rep)
     }
-
-
-test<-html_body %>%
-    xml2::xml_find_all("//div[@class='module']//h2[@id='M0']")
-
-    xml2::read_html(file.path(path,l_files[i])) %>%
-      rvest::html_nodes("body") %>%
-      xml2::xml_find_all("//div[@class='summary']//a/text()|//div[@class='summary']//img)") %>%
-                           xml2::xml_attr(attr = "alt")
-
   })
+  fastqc_table <- do.call(f_files, rbind)
 }

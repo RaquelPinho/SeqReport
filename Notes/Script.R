@@ -22,3 +22,6 @@ usethis::use_r("fastqc_group_report")
 usethis::use_r("readHTMLtable")
 # I will rename the function because it has the same name as the XML function.
 usethis::rename_files("readHTMLTable", "read_html_table")
+
+# loading all functions
+load_all()

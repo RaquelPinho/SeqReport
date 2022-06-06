@@ -9,9 +9,9 @@
 #' @export
 #'
 #' @examples
-readHTMLTable <- function(file, info = c("stats", "hits")) {
+read_html_table <- function(file, info = c("stats", "hits")) {
   index <- ifelse(info == "stats", 1, 2)
-  table <- XML::readHTMLTable(file.path(path,l_files[i]))[[index]] %>%
+  table <- XML::readHTMLTable(file)[[index]] %>%
              t() %>%
              dplyr::as_tibble() %>%
              janitor::row_to_names(row_number = 1)

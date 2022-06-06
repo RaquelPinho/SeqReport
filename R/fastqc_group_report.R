@@ -3,7 +3,7 @@
 #' FastQC evaluation presented in a directory and will combine the information in a
 #' data_table.
 #'
-#' @import xml2
+#' @import xml2, read_html_table
 #'
 #' @param path path to the directory that contain one or more .html files from the
 #' FastQC.
@@ -41,8 +41,10 @@ fastqc_group_report <- function( path, info = "all", stats = TRUE, samples = NUL
   }
 
   f_files <- lapply(seq_along(l_files), function(i) {
+    # Getting file path
+    f_path <- file.path(path,l_files[i])
     # Getting the body of the html file
-    html_body <- xml2::read_html(file.path(path,l_files[i])) %>%
+    html_body <- xml2::read_html(f_path) %>%
       rvest::html_nodes("body")
     # extracting the pass, warning, fail results
     res_info <- html_body %>%
@@ -61,12 +63,15 @@ fastqc_group_report <- function( path, info = "all", stats = TRUE, samples = NUL
     if (stats == FALSE) {
       table_stats <- table_info
     } else {
-     table_stats <- read_html_table(file = file.path(path,l_files[i]), info = "stats")
-     over_rep <- unique(XML::readHTMLTable(file.path(path,l_files[i]))[[2]]['Possible Source'])
+     table_stats <- read_html_table(file = f_path, info = "stats") %>%
+                      dplyr::mutate(Sample = samples[i])
+     over_rep <- unlist(unique(XML::readHTMLTable(f_path)[[2]][,'Possible Source']))
      table_stats <- table_info %>%
-                    dplyr::left_join(table, by = c('Sample' = "Filename")) %>%
-                    cbind(over_rep)
+                    dplyr::full_join(table_stats, by = "Sample") %>%
+                    dplyr::mutate(Over_rep = paste(over_rep, collapse = ", "))
+
     }
+    return(table_stats)
   })
-  fastqc_table <- do.call(f_files, rbind)
+  fastqc_table <- do.call(rbind, f_files)
 }

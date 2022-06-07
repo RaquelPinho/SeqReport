@@ -2,19 +2,37 @@
 #'
 #' @description helper function to get the table from the html file and transpose it.
 #'
-#' @param file path to the html file
-#' @param info if you want the stats table or the over represented sequences table.
+#' @import tibble
+#' @import janitor
+#' @import  XML
 #'
-#' @return a tibble from the chosen table transposed
+#' @param file path to the html file.
+#' @param info if you want the stats table or the over represented sequences table.
+#' @param transpose logical, if the table should be transposed or not. Default = TRUE.
+#' @return a tibble from the chosen table from the fastqc html file.
+#'
 #' @export
 #'
 #' @examples
-read_html_table <- function(file, info = c("stats", "hits")) {
-  index <- ifelse(info == "stats", 1, 2)
-  table <- XML::readHTMLTable(file)[[index]] %>%
-             t() %>%
-             dplyr::as_tibble() %>%
-             janitor::row_to_names(row_number = 1)
+#' \dontrun{
+#'      file <- path/to/file/file.html
+#'      table <- read_html_table(file = file, info = stats, transpose = TRUE)
+#' }
+#'
+read_html_table <- function(file, info = c("stats", "hits"), transpose = TRUE) {
 
+  index <- ifelse(info == "stats", 1, 2)
+  table <- XML::readHTMLTable(file)[[index]]
+
+  if (transpose == TRUE) {
+      table <- table %>%
+        t() %>%
+        tibble::as_tibble() %>%
+        janitor::row_to_names(row_number = 1)
+    }
+  if (!tibble::is_tibble(table)) {
+    table <- tibble::as_tibble(table)
+  }
   return(table)
 }
+

@@ -24,4 +24,22 @@ usethis::use_r("readHTMLtable")
 usethis::rename_files("readHTMLTable", "read_html_table")
 
 # loading all functions
-load_all()
+devtools::load_all()
+
+## Creating documetation
+devtools::document()
+
+## Import package that will be used is the two functions, this will be added to the
+# documentation
+usethis::use_package("tibble")
+usethis::use_package("XML")
+usethis::use_package("xml2")
+usethis::use_package("rvest")
+usethis::use_package("dplyr")
+usethis::use_package("janitor")
+usethis::use_pipe(export = TRUE)
+
+## updating the document
+devtools::document()
+usethis::use_mit_license()
+devtools::check()

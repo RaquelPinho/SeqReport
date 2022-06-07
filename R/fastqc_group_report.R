@@ -3,7 +3,10 @@
 #' FastQC evaluation presented in a directory and will combine the information in a
 #' data_table.
 #'
-#' @import xml2, read_html_table
+#' @import xml2
+#' @import rvest
+#' @import dplyr
+#' @import tibble
 #'
 #' @param path path to the directory that contain one or more .html files from the
 #' FastQC.
@@ -20,7 +23,9 @@
 #' to be reported in the directory in the same order as in the directory. default NULL.
 #' If NULL, the basename of the files are going to be used.
 #'
-#' @return
+#' @return dataframe containing the statistical information from all fastqc.html files in the directory
+#' in path.
+#'
 #' @export
 #'
 #' @examples
@@ -57,7 +62,7 @@ fastqc_group_report <- function( path, info = "all", stats = TRUE, samples = NUL
     # creating a table
     table_info <- res_info %>%
                   t() %>%
-                  dplyr::as_tibble()
+                  tibble::as_tibble()
     table_info <- cbind("Sample" = samples[i], table_info)
     # getting the stats information
     if (stats == FALSE) {

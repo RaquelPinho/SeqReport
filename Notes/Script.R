@@ -50,4 +50,10 @@ lintr::lint_package()
 styler::style_file("R/read_html_table.R")
 styler::style_file("R/fastqc_group_report.R")
 
+usethis::use_git(message = "finished the fastqc_group_report.R function and added description")
 
+# Creating test files for the read_html_table and fastqc_group_report.R
+usethis::use_testthat()
+usethis::use_test("read_html_table")
+testthat::test_file("./tests/testthat/test-read_html_table.R")
+styler::style_file("tests/")

@@ -23,6 +23,11 @@
 #' }
 #'
 read_html_table <- function(file, info = c("stats", "hits"), transpose = TRUE) {
+
+  if (!(info %in% c("stats", "hits"))) {
+    stop("info argument is missing or wrong,  with no default!")
+  }
+
   index <- ifelse(info == "stats", 1, 2)
   table <- XML::readHTMLTable(file)[[index]]
 

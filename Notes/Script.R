@@ -43,3 +43,11 @@ usethis::use_pipe(export = TRUE)
 devtools::document()
 usethis::use_mit_license()
 devtools::check()
+usethis::use_git(message = "added the examples and fixed the read_html_table function")
+
+## checking formating so far
+lintr::lint_package()
+styler::style_file("R/read_html_table.R")
+styler::style_file("R/fastqc_group_report.R")
+
+

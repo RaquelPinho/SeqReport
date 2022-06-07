@@ -31,3 +31,15 @@ This function will get the information from all .html files from the
 FastQC evaluation presented in a directory and will combine the information in a
 data_table.
 }
+\examples{
+\dontrun{
+path <- "path/to/directory/containing/html/files"
+table_fastqc <- fastqc_group_report(
+  path = path,
+  info = all,
+  stats = TRUE,
+  samples = NULL
+)
+}
+
+}

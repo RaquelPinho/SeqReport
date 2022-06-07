@@ -9,20 +9,22 @@ read_html_table(file, info = c("stats", "hits"), transpose = TRUE)
 \arguments{
 \item{file}{path to the html file.}
 
-\item{info}{if you want the stats table or the over represented sequences table.}
+\item{info}{The table to be extracted: stats table or the overrepresented
+sequences table.}
 
-\item{transpose}{logical, if the table should be transposed or not. Default = TRUE.}
+\item{transpose}{logical, if the table should be transposed or not.
+Default = TRUE.}
 }
 \value{
 a tibble from the chosen table from the fastqc html file.
 }
 \description{
-helper function to get the table from the html file and transpose it.
+function to get the table from the html file and transpose it.
 }
 \examples{
 \dontrun{
-     file <- path/to/file/file.html
-     table <- read_html_table(file = file, info = stats, transpose = TRUE)
+file <- "path/to/file/file.html"
+table <- read_html_table(file = file, info = stats, transpose = TRUE)
 }
 
 }

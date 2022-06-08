@@ -34,7 +34,7 @@ read_html_table <- function(file, info = "stats", transpose = TRUE) {
   if (transpose == TRUE) {
     table <- table %>%
       t() %>%
-      tibble::as_tibble(.name_repair = 'unique') %>%
+      tibble::as_tibble(.name_repair = "unique") %>%
       janitor::row_to_names(row_number = 1)
   }
   if (!tibble::is_tibble(table)) {

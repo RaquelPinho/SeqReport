@@ -40,8 +40,14 @@
 #' )
 #' }
 #'
-fastqc_group_report <- function(path, info = "all", stats = TRUE, samples = NULL) {
-
+fastqc_group_report <- function(path = NULL, info = "all", stats = TRUE, samples = NULL) {
+  # Checking if there is a path argument and if the path given exists
+  if (is.null(path)) {
+    stop("Argument 'path' is missing, with no default")
+  }
+  if (!dir.exists(path)) {
+    stop("Directory does not exist.")
+  }
   # creating the list of files to be used
   l_files <- list.files(path = path, pattern = ".html")
   if (length(l_files) == 0) {
@@ -115,6 +121,9 @@ fastqc_group_report <- function(path, info = "all", stats = TRUE, samples = NULL
 #'
 #'
 .filter_info <- function(fastqc_table, info = "warnings") {
+  if (info == "pass") {
+    pattern <- "PASS"
+  }
   if (info == "warnings") {
     pattern <- "WARNING"
   }

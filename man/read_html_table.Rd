@@ -4,13 +4,13 @@
 \alias{read_html_table}
 \title{reads a html table from file into R}
 \usage{
-read_html_table(file, info = c("stats", "hits"), transpose = TRUE)
+read_html_table(file, info = "stats", transpose = TRUE)
 }
 \arguments{
 \item{file}{path to the html file.}
 
-\item{info}{The table to be extracted: stats table or the overrepresented
-sequences table.}
+\item{info}{The table to be extracted: "stats" stats table or "hits" the overrepresented
+sequences table. Defaul "stats".}
 
 \item{transpose}{logical, if the table should be transposed or not.
 Default = TRUE.}

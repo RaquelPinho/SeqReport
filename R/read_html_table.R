@@ -8,8 +8,8 @@
 #'
 #'
 #' @param file path to the html file.
-#' @param info The table to be extracted: stats table or the overrepresented
-#' sequences table.
+#' @param info The table to be extracted: "stats" stats table or "hits" the overrepresented
+#' sequences table. Defaul "stats".
 #' @param transpose logical, if the table should be transposed or not.
 #' Default = TRUE.
 #' @return a tibble from the chosen table from the fastqc html file.
@@ -22,10 +22,10 @@
 #' table <- read_html_table(file = file, info = stats, transpose = TRUE)
 #' }
 #'
-read_html_table <- function(file, info = c("stats", "hits"), transpose = TRUE) {
+read_html_table <- function(file, info = "stats", transpose = TRUE) {
 
   if (!(info %in% c("stats", "hits"))) {
-    stop("info argument is missing or wrong,  with no default!")
+    stop("info argument is wrong!")
   }
 
   index <- ifelse(info == "stats", 1, 2)
@@ -34,7 +34,7 @@ read_html_table <- function(file, info = c("stats", "hits"), transpose = TRUE) {
   if (transpose == TRUE) {
     table <- table %>%
       t() %>%
-      tibble::as_tibble() %>%
+      tibble::as_tibble(.name_repair = 'unique') %>%
       janitor::row_to_names(row_number = 1)
   }
   if (!tibble::is_tibble(table)) {

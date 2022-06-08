@@ -29,6 +29,6 @@ test_that("There will be an error when no info argument is present.", {
   test_file <- file.path(testdata_dir, "FastQC", "sample1_fastqc.html")
   test_table_hits <- readRDS(file.path(testdata_dir, "test_table_hits.RDS"))
   expect_error(
-    read_html_table(file = test_file, transpose = FALSE),
-    "info argument is missing or wrong,  with no default!")
+    read_html_table(file = test_file, transpose = FALSE, info = "over"),
+    "info argument is wrong!")
 })

@@ -42,7 +42,8 @@ test_that("The results are as expected", {
   parent_testdata_dir <- file.path(system.file(paste0("extdata/testdata/"), package = "SeqReport"))
   testdata_dir <- file.path(parent_testdata_dir, "FastQC")
   test_table <- readRDS(file.path(parent_testdata_dir, "test_fqc_table_samples.RDS"))
-  expect_equal(# with sample list
+  expect_equal(
+    # with sample list
     fastqc_group_report(
       path = testdata_dir,
       info = "all",
@@ -52,7 +53,8 @@ test_that("The results are as expected", {
     test_table
   )
   test_table <- readRDS(file.path(parent_testdata_dir, "test_fqc_table_no_samples.RDS"))
-  expect_equal(# with no samples list
+  expect_equal(
+    # with no samples list
     fastqc_group_report(
       path = testdata_dir,
       info = "all",
@@ -62,7 +64,8 @@ test_that("The results are as expected", {
     test_table
   )
   test_table <- readRDS(file.path(parent_testdata_dir, "test_fqc_table_no_samples_PASS.RDS"))
-  expect_equal(# with no samples list
+  expect_equal(
+    # with no samples list
     fastqc_group_report(
       path = testdata_dir,
       info = "pass",
@@ -72,7 +75,8 @@ test_that("The results are as expected", {
     test_table
   )
   test_table <- readRDS(file.path(parent_testdata_dir, "test_fqc_table_no_samples_WARNING.RDS"))
-  expect_equal(# with no samples list
+  expect_equal(
+    # with no samples list
     fastqc_group_report(
       path = testdata_dir,
       info = "warnings",
@@ -82,7 +86,8 @@ test_that("The results are as expected", {
     test_table
   )
   test_table <- readRDS(file.path(parent_testdata_dir, "test_fqc_table_no_samples_FAIL.RDS"))
-  expect_equal(# with no samples list
+  expect_equal(
+    # with no samples list
     fastqc_group_report(
       path = testdata_dir,
       info = "fail",
@@ -92,7 +97,8 @@ test_that("The results are as expected", {
     test_table
   )
   test_table <- readRDS(file.path(parent_testdata_dir, "test_fqc_table_no_samples_WARN_FAIL.RDS"))
-  expect_equal(# with no samples list
+  expect_equal(
+    # with no samples list
     fastqc_group_report(
       path = testdata_dir,
       info = "warn_fail",
@@ -102,7 +108,8 @@ test_that("The results are as expected", {
     test_table
   )
   test_table <- readRDS(file.path(parent_testdata_dir, "test_fqc_table_no_samples_no_stats.RDS"))
-  expect_equal(# with no samples list
+  expect_equal(
+    # with no samples list
     fastqc_group_report(
       path = testdata_dir,
       info = "all",

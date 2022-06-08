@@ -62,3 +62,4 @@ devtools::load_all()
 
 usethis::use_test("fastqc_group_report")
 testthat::test_file("./tests/testthat/test-fastqc_group_report.R")
+styler::style_file("./tests/testthat/test-fastqc_group_report.R")

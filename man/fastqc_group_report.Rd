@@ -4,7 +4,7 @@
 \alias{fastqc_group_report}
 \title{fastqc_group_report}
 \usage{
-fastqc_group_report(path, info = "all", stats = TRUE, samples = NULL)
+fastqc_group_report(path = NULL, info = "all", stats = TRUE, samples = NULL)
 }
 \arguments{
 \item{path}{path to the directory that contain one or more .html files from the

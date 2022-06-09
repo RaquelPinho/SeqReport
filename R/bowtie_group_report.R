@@ -1,18 +1,61 @@
-#' Title
+#' Creates a table from the alignment reports from bowtie, containing information from a
+#' all .log files in a directory.
 #'
-#' @param path
-#' @param suffix
-#' @param samples
+#' @param path The path to the directory containing the log files from the bowtie
+#' alignment.
+#' @param suffix The suffix of the report files created by the code similar to:
+#' bowtie2 -x ref -1 sample1_R1.fq -2 sample1_R2.fq -S sample1.sam 2> sample1.log
+#' In this case it would be .log. Default ".log"
+#' @param samples A vector containing the names of the samples, should be the same
+#' length as list.files(path, pattern = suffix), and follow the same order. If NULL,
+#' sample names will be the file name without the suffix given.
 #'
-#' @return
+#' @return data frame of the stats contained in the log file from bowtie for all samples
+#' in the directory.
 #' @export
 #'
 #' @examples
-bowtie_group_report <- function(path = NULL, suffix = "log", samples = NULL) {
+bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
+  if (is.null(path)) {
+    stop("Argument 'path' is missing, with no default")
+  }
+  if (!dir.exists(path)) {
+    stop("Directory does not exist.")
+  }
+  # creating the list of files to be used
+  l_files <- list.files(path = path, pattern = suffix)
+  if (length(l_files) == 0) {
+    stop("There is no file with specified suffix in the directory!")
+  }
+  # Getting the name of the samples
+  if (!is.null(samples)) {
+    if (length(samples) != length(l_files)) {
+      stop("Vector of samples names, and file list are different lengths!")
+    }
+  } else {
+    samples <- gsub(suffix, "", basename(l_files))
+  }
+  # Getting the path to each individual file
+  f_path <- file.path(path, l_files)
+  # Getting the list of dataframes containing the information
+  l_bowtie <- lapply(f_path, .import_text_from_log)
+  # Combining the information in the list
+  dt_bowtie <- do.call(rbind, l_bowtie) %>%
+                 dplyr::mutate(Sample = samples)
+
 
 }
 
-
+#' helper for bowtie_group_report
+#'
+#' @param file
+#'
+#' @import dplyr
+#' @import tibble
+#'
+#' @return datatable of individual files
+#' @keywords internal
+#'
 .import_text_from_log <- function(file) {
   # Read the text inside file
   text <- readLines(file)

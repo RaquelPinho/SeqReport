@@ -63,3 +63,7 @@ devtools::load_all()
 usethis::use_test("fastqc_group_report")
 testthat::test_file("./tests/testthat/test-fastqc_group_report.R")
 styler::style_file("./tests/testthat/test-fastqc_group_report.R")
+
+# Creating the function to get the data from bowtie log
+usethis::use_r("bowtie_group_report")
+devtools::document()

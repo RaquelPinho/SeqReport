@@ -10,6 +10,9 @@
 #' length as list.files(path, pattern = suffix), and follow the same order. If NULL,
 #' sample names will be the file name without the suffix given.
 #'
+#' @import purrr
+#' @import dplyr
+#'
 #' @return data frame of the stats contained in the log file from bowtie for all samples
 #' in the directory.
 #' @export
@@ -40,10 +43,9 @@ bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
   # Getting the list of dataframes containing the information
   l_bowtie <- lapply(f_path, .import_text_from_log)
   # Combining the information in the list
-  dt_bowtie <- do.call(rbind, l_bowtie) %>%
-                 dplyr::mutate(Sample = samples)
-
-
+  dt_bowtie <- l_bowtie %>%
+               purrr::reduce(full_join) %>%
+               dplyr::mutate(Sample = samples)
 }
 
 #' helper for bowtie_group_report
@@ -67,7 +69,7 @@ bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
   index_rate <- grep("alignment rate", text)
   alignment_rate <- strsplit(text[index_rate], " ")[[1]][1]
   # Find the headers of the info
-  text <- text[-c(1,index_rate)]
+  text <- text[-c(1, index_rate)]
   headers <- grep("; of these:", text)
   # Removing 'of these'
   text <- gsub("; of these:", "", text)
@@ -77,17 +79,17 @@ bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
   dt <- c()
   while (i < length(t_split)) {
     if (i %in% headers) {
-      if(length(t_split[[i]]) == 2) {
+      if (length(t_split[[i]]) == 2) {
         names_dt[i] <- t_split[[i]][2]
         dt[i] <- t_split[[i]][1]
       } else {
         n_word <- length(strsplit(t_split[[i]], " ")[[1]])
         names_dt[i] <- paste(strsplit(
-                                 t_split[[i]], " "
-                               )[[1]][3:n_word], collapse = "_")
+          t_split[[i]], " "
+        )[[1]][3:n_word], collapse = "_")
         dt[i] <- paste(strsplit(
-                               t_split[[i]], " "
-                               )[[1]][1:2], collapse = "")
+          t_split[[i]], " "
+        )[[1]][1:2], collapse = "")
       }
       names_dt[i] <- paste0(names_dt[i], "_H")
     } else {
@@ -99,11 +101,13 @@ bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
     i <- i + 1
   }
   dt <- dt %>%
-          t() %>%
-             tibble::as_tibble(.name_repair = "unique") %>%
-                mutate(File = basename(file),
-                       total_reads = total_reads,
-                       alignment_rate = alignment_rate)
+    t() %>%
+    tibble::as_tibble(.name_repair = "unique") %>%
+    mutate(
+      File = basename(file),
+      total_reads = total_reads,
+      alignment_rate = alignment_rate
+    )
   colnames(dt) <- c(names_dt, "file", "total_reads", "alignment_rate")
   return(dt)
 }

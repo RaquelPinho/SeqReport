@@ -18,6 +18,10 @@
 #' @export
 #'
 #' @examples
+#' dir <- file.path(system.file(paste0("extdata/testdata/Bowtie/"),package = "SeqReport"))
+#' bowtie_group_report(path = dir)
+#' bowtie_group_report(path = dir, samples = c("sp1", "sp2", "sp3"))
+#'
 bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
   if (is.null(path)) {
     stop("Argument 'path' is missing, with no default")
@@ -46,6 +50,7 @@ bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
   dt_bowtie <- l_bowtie %>%
                purrr::reduce(full_join) %>%
                dplyr::mutate(Sample = samples)
+  return(dt_bowtie)
 }
 
 #' helper for bowtie_group_report

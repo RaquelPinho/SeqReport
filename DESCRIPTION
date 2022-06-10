@@ -18,7 +18,8 @@ Imports:
     XML,
     dplyr,
     janitor,
-    purrr
+    purrr,
+    ggplot2
 RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0)

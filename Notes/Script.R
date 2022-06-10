@@ -74,3 +74,10 @@ usethis::use_package("purrr")
 lintr::lint_package()
 styler::style_file("./tests/testthat/test-bowtie_group_report.R")
 devtools::check()
+
+# Creating function to visualize Fasqc results
+usethis::use_r("fastqc_heatmap_stats")
+usethis::use_package("ggplot2")
+
+# Creating a function
+usethis::use_r("fastqc_heatmap_reads")

@@ -19,7 +19,9 @@ Imports:
     dplyr,
     janitor,
     purrr,
-    ggplot2
+    ggplot2,
+    grid,
+    ComplexHeatmap
 RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0)

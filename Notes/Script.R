@@ -78,6 +78,11 @@ devtools::check()
 # Creating function to visualize Fasqc results
 usethis::use_r("fastqc_heatmap_stats")
 usethis::use_package("ggplot2")
+styler::style_file("R/fastqc_heatmap_stats.R")
 
 # Creating a function
 usethis::use_r("fastqc_heatmap_reads")
+usethis::use_package("grid")
+usethis::use_package("ComplexHeatmap")
+usethis::rename_files("fastqc_heatmap_reads", "bowtie_heatmap")
+usethis::use_r("bowtie_heatmap")

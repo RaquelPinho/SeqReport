@@ -18,7 +18,7 @@
 #' @export
 #'
 #' @examples
-#' dir <- file.path(system.file(paste0("extdata/testdata/Bowtie/"),package = "SeqReport"))
+#' dir <- file.path(system.file(paste0("extdata/testdata/Bowtie/"), package = "SeqReport"))
 #' bowtie_group_report(path = dir)
 #' bowtie_group_report(path = dir, samples = c("sp1", "sp2", "sp3"))
 #'
@@ -48,8 +48,9 @@ bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
   l_bowtie <- lapply(f_path, .import_text_from_log)
   # Combining the information in the list
   dt_bowtie <- l_bowtie %>%
-               purrr::reduce(full_join) %>%
-               dplyr::mutate(Sample = samples)
+    purrr::reduce(full_join) %>%
+    dplyr::mutate(Sample = samples) %>%
+    dplyr::relocate(Sample)
   return(dt_bowtie)
 }
 

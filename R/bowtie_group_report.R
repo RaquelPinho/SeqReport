@@ -48,7 +48,7 @@ bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
   l_bowtie <- lapply(f_path, .import_text_from_log)
   # Combining the information in the list
   dt_bowtie <- l_bowtie %>%
-    purrr::reduce(full_join) %>%
+    purrr::reduce(dplyr::full_join) %>%
     dplyr::mutate(Sample = samples) %>%
     dplyr::relocate(Sample)
   return(dt_bowtie)
@@ -109,7 +109,7 @@ bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
   dt <- dt %>%
     t() %>%
     tibble::as_tibble(.name_repair = "unique") %>%
-    mutate(
+    dplyr::mutate(
       File = basename(file),
       total_reads = total_reads,
       alignment_rate = alignment_rate

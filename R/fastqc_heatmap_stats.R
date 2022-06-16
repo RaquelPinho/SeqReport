@@ -25,7 +25,7 @@
 #'
 fastqc_heatmap_stats <- function(fastqc_table = NULL, total_sequences = TRUE) {
   # Checking if table exists
-  if (is.null(fastqc_tableL)) {
+  if (is.null(fastqc_table)) {
     stop("fastqc_table not provided!")
   }
   # Getting the column that have the stats
@@ -47,7 +47,7 @@ fastqc_heatmap_stats <- function(fastqc_table = NULL, total_sequences = TRUE) {
   if (total_sequences == TRUE) {
     if ("Total Sequences" %in% colnames(fastqc_table)) {
       bar_ha <- ComplexHeatmap::HeatmapAnnotation(
-        T_reads = anno_barplot(as.numeric(fastqc_table$`Total Sequences`),
+        T_reads = ComplexHeatmap::anno_barplot(as.numeric(fastqc_table$`Total Sequences`),
           gp = grid::gpar(fill = "red")
         )
       )

@@ -147,52 +147,53 @@ bowtie_heatmap <- function(dt_bowtie = NULL,
     )
   }
 }
-col_fun <- circlize::colorRamp2(c(0, 30, 50,100, 180, 1500, 2000, 220000, 250000, 270000, 300000,  600000,650000, 1500000), hcl_palette = "viridis", reverse = TRUE )
-col_fun <- circlize::colorRamp2(c(0,50, 180, 1500, 2000, 25000,30000, 60000, 120000), hcl_palette = "viridis", reverse = TRUE )
-scales::show_col( col_fun(c(0, 10, 20, 30, 50,100, 180, 1500, 2000, 220000, 250000, 270000, 300000, 550000, 600000,650000, 1000000,1500000)))
-viridis::viridis(9)
-[1] "#440154FF" "#472D7BFF" "#3B528BFF" "#2C728EFF" "#21908CFF"
-[6] "#27AD81FF" "#5DC863FF" "#AADC32FF" "#FDE725FF"
-col_fun2 <- circlize::colorRamp2(c(0,100, 2000, 100000, 1000000), c("yellow", "green", "darkgreen", "lightblue", "darkblue"))
-htmp <- ComplexHeatmap::Heatmap(mat,
-                                name = "N reads",
-                                col = colors,
-                                rect_gp = grid::gpar(col = "white", lwd = 1),
-                                cluster_columns = FALSE,
-                                cluster_rows = FALSE,
-                                row_names_side = "left",
-                                column_names_side = "top"
-
-
-)
-
-                                ,
-                                row_names_side = "left",
-                                column_names_max_height = grid::unit(11, "cm"),
-                                column_names_gp = grid::gpar(fontsize = 10),
-                                row_names_gp = grid::gpar(fontsize = 10),
-
-)
-
-
-
-.perc_fun <- function(x) {
-  str_col <-  sapply(x, function(ele) {
-    spl_ele <- unlist(strsplit(ele, " "))
-    ele <- ifelse(length(spl_ele) == 2,
-                        spl_ele[2],
-                        spl_ele[1]
-    )
-    return(ele)
-
-  })
-}
-
-.value_fun <- function(x) {
-  str_col <-  sapply(x, function(ele) {
-    spl_ele <- unlist(strsplit(ele, " "))
-    ele <- spl_ele[1]
-    return(ele)
-
-  })
-}
+#col_fun <- circlize::colorRamp2(c(0, 30, 50,100, 180, 1500, 2000, 220000, 250000, 270000, 300000,  600000,650000, 1500000), hcl_palette = "viridis", reverse = TRUE )
+#col_fun <- circlize::colorRamp2(c(0,50, 180, 1500, 2000, 25000,30000, 60000, 120000), hcl_palette = "viridis", reverse = TRUE )
+#scales::show_col( col_fun(c(0, 10, 20, 30, 50,100, 180, 1500, 2000, 220000, 250000, 270000, 300000, 550000, 600000,650000, 1000000,1500000)))
+#viridis::viridis(9)
+#[1] "#440154FF" "#472D7BFF" "#3B528BFF" "#2C728EFF" "#21908CFF"
+#[6] "#27AD81FF" "#5DC863FF" "#AADC32FF" "#FDE725FF"
+#col_fun2 <- circlize::colorRamp2(c(0,100, 2000, 100000, 1000000), c("yellow", "green", "darkgreen", "lightblue", "darkblue"))
+#htmp <- ComplexHeatmap::Heatmap(mat,
+#                                name = "N reads",
+#                                col = colors,
+#                                rect_gp = grid::gpar(col = "white", lwd = 1),
+#                                cluster_columns = FALSE,
+#                                cluster_rows = FALSE,
+#                                row_names_side = "left",
+#                                column_names_side = "top"
+#
+#
+#)
+#
+#                                ,
+#                                row_names_side = "left",
+#                                column_names_max_height = grid::unit(11, "cm"),
+#                                column_names_gp = grid::gpar(fontsize = 10),
+#                                row_names_gp = grid::gpar(fontsize = 10),
+#
+#)
+#
+#
+#
+#.perc_fun <- function(x) {
+#  str_col <-  sapply(x, function(ele) {
+#    spl_ele <- unlist(strsplit(ele, " "))
+#    ele <- ifelse(length(spl_ele) == 2,
+#                        spl_ele[2],
+#                        spl_ele[1]
+#    )
+#    return(ele)
+#
+#  })
+#}
+#
+#.value_fun <- function(x) {
+#  str_col <-  sapply(x, function(ele) {
+#    spl_ele <- unlist(strsplit(ele, " "))
+#    ele <- spl_ele[1]
+#    return(ele)
+#
+#  })
+#}
+#

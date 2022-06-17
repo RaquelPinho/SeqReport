@@ -28,7 +28,7 @@ Creates a table from the alignment reports from bowtie, containing information f
 all .log files in a directory.
 }
 \examples{
-dir <- file.path(system.file(paste0("extdata/testdata/Bowtie/"),package = "SeqReport"))
+dir <- file.path(system.file(paste0("extdata/testdata/Bowtie/"), package = "SeqReport"))
 bowtie_group_report(path = dir)
 bowtie_group_report(path = dir, samples = c("sp1", "sp2", "sp3"))
 

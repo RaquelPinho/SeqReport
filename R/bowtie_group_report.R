@@ -10,7 +10,7 @@
 #' length as list.files(path, pattern = suffix), and follow the same order. If NULL,
 #' sample names will be the file name without the suffix given.
 #'
-#' @import purrr
+#' @importFrom purrr reduce
 #' @import dplyr
 #'
 #' @return data frame of the stats contained in the log file from bowtie for all samples
@@ -50,7 +50,7 @@ bowtie_group_report <- function(path = NULL, suffix = ".log", samples = NULL) {
   dt_bowtie <- l_bowtie %>%
     purrr::reduce(dplyr::full_join) %>%
     dplyr::mutate(Sample = samples) %>%
-    dplyr::relocate(Sample)
+    dplyr::relocate(.data$Sample)
   return(dt_bowtie)
 }
 

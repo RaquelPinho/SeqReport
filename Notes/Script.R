@@ -93,3 +93,21 @@ styler::style_file("R/bowtie_heatmap.R")
 lintr::lint_package()
 usethis::use_package("readr")
 usethis::use_package("circlize")
+
+# Creating function for the summary of the results for the Fastqc
+
+usethis::use_r("fastqc_report_summary")
+devtools::document()
+devtools::check()
+
+# Creating function for the bowtie summary
+
+usethis::use_r("bowtie_report_summary")
+usethis::use_package("stringr")
+usethis::use_package("rlang")
+usethis::use_package("magrittr")
+devtools::document()
+devtools::check()
+styler::style_file("R/bowtie_report_summary.R")
+lintr::lint_package()
+devtools::load_all()

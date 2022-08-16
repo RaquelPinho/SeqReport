@@ -23,8 +23,10 @@ Imports:
     grid,
     ComplexHeatmap,
     readr,
-    circlize
-RoxygenNote: 7.1.2
+    circlize,
+    rlang,
+    stringr
+RoxygenNote: 7.2.1
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

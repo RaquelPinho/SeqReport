@@ -9,6 +9,7 @@
 #' @import readr
 #' @import grid
 #' @import circlize
+#' @importFrom rlang .data
 #'
 #'
 #' @param dt_bowtie data.frame or tibbles produced by the function bowtie_group_report.
@@ -28,6 +29,7 @@
 #' if samples parameter is provided, the samples to filter should be present in the samples parameter.
 #' @param barplot logical, default = FALSE. if the total reads should be displayed as a bar plot.
 #' Only works if the total_reads is set to TRUE.
+#'
 #'
 #' @return a Heatmap object.
 #'
@@ -65,7 +67,7 @@ bowtie_heatmap <- function(dt_bowtie = NULL,
       stop("Samples to filter not present in the data.")
     } else {
       dt_bowtie <- dt_bowtie %>%
-        dplyr::filter(!Sample %in% filter_samples)
+        dplyr::filter(!.data$Sample %in% filter_samples)
     }
   }
   # Getting the column that have the info on the header chosen by the user
@@ -90,26 +92,26 @@ bowtie_heatmap <- function(dt_bowtie = NULL,
   }
   if (value == "percent") {
     dt_int <- dt_bowtie %>%
-      dplyr::select(Sample, !!(index_k)) %>%
-      dplyr::mutate(dplyr::across(!c(Sample, total_reads), .perc_fun)) %>%
+      dplyr::select(.data$Sample, !!(index_k)) %>%
+      dplyr::mutate(dplyr::across(!c(.data$Sample, .data$total_reads), .perc_fun)) %>%
       dplyr::mutate(dplyr::across(
-        !c(Sample, total_reads),
+        !c(.data$Sample, .data$total_reads),
         readr::parse_number
       ))
   }
   if (value == "raw") {
     dt_int <- dt_bowtie %>%
-      dplyr::select(Sample, !!(index_k)) %>%
-      dplyr::mutate(dplyr::across(!c(Sample, total_reads), .value_fun)) %>%
+      dplyr::select(.data$Sample, !!(index_k)) %>%
+      dplyr::mutate(dplyr::across(!c(.data$Sample, total_reads), .value_fun)) %>%
       dplyr::mutate(dplyr::across(
-        !c(Sample, total_reads),
+        !c(.data$Sample, total_reads),
         readr::parse_number
       ))
   }
 
   # Making a matrix with only the column that should be in the heatmap
   mat <- dt_int %>%
-    dplyr::select(!c(Sample, total_reads, alignment_rate)) %>%
+    dplyr::select(!c(.data$Sample, total_reads, alignment_rate)) %>%
     as.matrix()
   row.names(mat) <- dt_int$Sample
 
@@ -134,7 +136,7 @@ bowtie_heatmap <- function(dt_bowtie = NULL,
       ))
       text_reads <- as.character(t_reads)
 
-      Tr_ha <- ComplexHeatmap::rowAnnotation(
+      tr_ha <- ComplexHeatmap::rowAnnotation(
         T_reads = ComplexHeatmap::anno_text(paste0("  ", text_reads),
           just = "left",
           gp = grid::gpar(
@@ -174,7 +176,7 @@ bowtie_heatmap <- function(dt_bowtie = NULL,
     for (i in seq_along(headers_i_m)) {
       if (i == 1) {
         factor[seq(1, (headers_i_m[i + 1] - 1))] <- "Main"
-      } else if (1 < i & headers_i_m[i] < max(headers_i_m)) {
+      } else if (1 < i && headers_i_m[i] < max(headers_i_m)) {
         factor[seq(headers_i_m[i], (headers_i_m[i + 1] - 1))] <- paste0("Sec_", i)
       } else if (headers_i_m[i] >= max(headers_i_m)) {
         factor[seq(headers_i_m[i], ncol(mat))] <- paste0("Sec_", i)
@@ -205,19 +207,19 @@ bowtie_heatmap <- function(dt_bowtie = NULL,
     column_gap = grid::unit(3, "mm"),
     heatmap_legend_param = lgd
   )
-  if (alignment_rate == FALSE & total_reads == FALSE) {
+  if (alignment_rate == FALSE && total_reads == FALSE) {
     htmp <- htmp
-  } else if (alignment_rate == TRUE & total_reads == FALSE) {
+  } else if (alignment_rate == TRUE && total_reads == FALSE) {
     htmp <- htmp + text_ha
-  } else if (alignment_rate == FALSE & total_reads == TRUE) {
+  } else if (alignment_rate == FALSE && total_reads == TRUE) {
     if (barplot == FALSE) {
-      htmp <- htmp + Tr_ha
+      htmp <- htmp + tr_ha
     } else {
       htmp <- htmp + bar_ha
     }
-  } else if (alignment_rate == TRUE & total_reads == TRUE) {
+  } else if (alignment_rate == TRUE && total_reads == TRUE) {
     if (barplot == FALSE) {
-      htmp <- htmp + Tr_ha + text_ha
+      htmp <- htmp + tr_ha + text_ha
     } else {
       htmp <- htmp + bar_ha + text_ha
     }
@@ -247,6 +249,7 @@ bowtie_heatmap <- function(dt_bowtie = NULL,
     )
     return(ele)
   })
+  return(str_col)
 }
 
 
@@ -266,5 +269,6 @@ bowtie_heatmap <- function(dt_bowtie = NULL,
     spl_ele <- unlist(strsplit(ele, " "))
     ele <- spl_ele[1]
     return(ele)
-  })
+    })
+  return(str_col)
 }

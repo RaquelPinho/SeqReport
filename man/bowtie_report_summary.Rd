@@ -36,3 +36,11 @@ A printed summary of the bowtie logs.
 \description{
 bowtie_report_summary
 }
+\examples{
+parent_testdata_dir <- file.path(system.file(paste0("extdata/testdata/"),
+package = "SeqReport"))
+data_table <- readRDS(file.path(parent_testdata_dir, "test_bowtie_no_samples.RDS"))
+bowtie_report_summary(dt_bowtie = data_table)
+
+
+}

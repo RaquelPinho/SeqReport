@@ -30,3 +30,13 @@ Red flags (fastqc flags that failed in at least 50% of the samples)
 \description{
 Fastqc report summary
 }
+\examples{
+
+parent_testdata_dir <- file.path(system.file(paste0("extdata/testdata/"),
+package = "SeqReport"))
+data_table <- readRDS(file.path(parent_testdata_dir, "test_fqc_table_no_samples.RDS"))
+fastqc_report_summary(fastqc_table = data_table)
+
+
+
+}

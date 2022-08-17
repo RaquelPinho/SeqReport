@@ -28,6 +28,13 @@
 #'
 #' @examples
 #'
+#' parent_testdata_dir <- file.path(system.file(paste0("extdata/testdata/"),
+#' package = "SeqReport"))
+#' data_table <- readRDS(file.path(parent_testdata_dir, "test_fqc_table_no_samples.RDS"))
+#' fastqc_report_summary(fastqc_table = data_table)
+#'
+#'
+#'
 fastqc_report_summary <- function(fastqc_table = NULL, path = NULL, exclude = NULL) {
  # Columns to be used
   cols <- c("Sample", "Total Sequences", "Sequence length", "Over_rep")
@@ -94,9 +101,9 @@ fastqc_report_summary <- function(fastqc_table = NULL, path = NULL, exclude = NU
   red_flags <- red_flags_fun(fastqc_table)
 
   cat("Summary of the FASTQC files.\n",
-      "There were ", nrow(fastqc_table), "files analyzed.\n",
+      "There were ", nrow(fastqc_table), " files analyzed.\n",
       "In those, the average number of reads was ", avg_reads, ".\n",
-      "The minimun number of reads was", min_reads,  " from samples: ", paste(min_read_samples, collapse = "\n"),
+      "The minimun number of reads was ", min_reads,  " from samples: ", paste(min_read_samples, collapse = "\n"),
       "\n",
       "The maximun number of reads was ", max_reads, " from samples: ", paste(max_read_samples, collapse = "\n"),
       "\n",

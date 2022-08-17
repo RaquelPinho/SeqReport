@@ -28,6 +28,12 @@
 #' @export
 #'
 #' @examples
+#' parent_testdata_dir <- file.path(system.file(paste0("extdata/testdata/"),
+#' package = "SeqReport"))
+#' data_table <- readRDS(file.path(parent_testdata_dir, "test_bowtie_no_samples.RDS"))
+#' bowtie_report_summary(dt_bowtie = data_table)
+#'
+#'
 bowtie_report_summary <- function(path = NULL, dt_bowtie = NULL,
                                   suffix = ".log", samples = NULL,
                                   exclude = NULL) {

@@ -111,3 +111,24 @@ devtools::check()
 styler::style_file("R/bowtie_report_summary.R")
 lintr::lint_package()
 devtools::load_all()
+
+# Creating the test files for the fastqc_report_summary.R
+
+usethis::use_test("fastqc_report_summary")
+testthat::test_file("./tests/testthat/test-fastqc_report_summary.R")
+devtools::check()
+
+# Creating the test files for the bowtie_report_summary
+
+usethis::use_test("bowtie_report_summary")
+testthat::test_file("./tests/testthat/test-bowtie_report_summary.R")
+devtools::check()
+
+# Creating funciton for bwa_report_group
+
+usethis::use_r("bwa_report_group")
+devtools::document()
+
+# Creating function for the bwa_report_summary
+usethis::use_r("bwa_report_summary")
+devtools::document()

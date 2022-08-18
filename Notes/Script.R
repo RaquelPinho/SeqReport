@@ -132,3 +132,6 @@ devtools::document()
 # Creating function for the bwa_report_summary
 usethis::use_r("bwa_report_summary")
 devtools::document()
+
+# Creating the function for the bwa_heatmap
+usethis::use_r("bwa_heatmap")

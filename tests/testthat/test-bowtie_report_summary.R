@@ -33,4 +33,3 @@ There were 3
 samples analyzed."
   )
 })
-

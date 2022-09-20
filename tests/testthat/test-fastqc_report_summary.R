@@ -12,7 +12,7 @@ test_that("Test error messages.", {
                                                path = file.path(parent_testdata_dir, "fake_dir"),
                                                exclude = NULL),
                          "Path does not exist!")
-  testthat::expect_error(fastqc_report_summary(fastqc_table = data_table[,-c(16,18,20)],
+  testthat::expect_error(fastqc_report_summary(fastqc_table = data_table[, -c(16, 18, 20)],
                                                path = NULL,
                                                exclude = NULL),
                          "Fastq table contain only the flag information!")

@@ -19,14 +19,16 @@ Imports:
     dplyr,
     janitor,
     purrr,
-    ggplot2,
     grid,
     ComplexHeatmap,
     readr,
     circlize,
     rlang,
-    stringr
+    stringr,
+    mgsub,
+    utils
 RoxygenNote: 7.2.1
-Suggests: 
+Suggests:
+    vdiffr (>= 1.0.4),
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

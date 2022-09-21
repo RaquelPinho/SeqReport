@@ -8,6 +8,7 @@
 #' in the same order as the files. default: NULL
 #'
 #' @importFrom dplyr mutate
+#' @importFrom utils read.delim
 #' @importFrom magrittr "%>%"
 #' @importFrom dplyr mutate_at
 #' @importFrom tibble rownames_to_column
@@ -18,6 +19,13 @@
 #' @export
 #'
 #' @examples
+#' parent_testdata_dir <- file.path(system.file(paste0("extdata/testdata/"),
+#' package = "SeqReport" ))
+#' testdata_dir <- file.path(parent_testdata_dir, "BWA")
+#' bwa_report_group(path = testdata_dir, suffix = ".txt",
+#' suffix_to_remove = "_report.txt",
+#' samples = NULL)
+#'
 bwa_report_group <- function(path = NULL, suffix = ".txt",
                              suffix_to_remove = "_merged_panel_nt_report.txt",
                              samples = NULL) {
@@ -31,13 +39,13 @@ bwa_report_group <- function(path = NULL, suffix = ".txt",
       files <- list.files(path, pattern = suffix, recursive = TRUE)
       # Getting the information on the files
       list_bwa <- lapply(files, function(file) {
-        options(scipen=999)
-        dt <- read.delim(file.path(path, file), header = FALSE, comment.char = "#")
-        dt <- dt[grep("SN", dt$V1),c(2:3)]
-        names(dt) <- c( "Stats", file)
+        options(scipen = 999)
+        dt <- utils::read.delim(file.path(path, file), header = FALSE, comment.char = "#")
+        dt <- dt[grep("SN", dt$V1), c(2:3)]
+        names(dt) <- c("Stats", file)
         dt <- t(dt)
-        colnames(dt) <- as.vector(dt[1,])
-        dt <- dt[-1,]
+        colnames(dt) <- as.vector(dt[1, ])
+        dt <- dt[-1, ]
       })
       names(list_bwa) <- files
       dt_bwa <- do.call(rbind, list_bwa)
@@ -51,9 +59,9 @@ bwa_report_group <- function(path = NULL, suffix = ".txt",
     dt_bwa <- dt_bwa %>%
               as.data.frame() %>%
               tibble::rownames_to_column(var = "Sample") %>%
-              dplyr::mutate(Sample = gsub(suffix_to_remove, "", Sample),
+              dplyr::mutate(Sample = gsub(suffix_to_remove, "", .data$Sample),
                             Files = files) %>%
-              dplyr::mutate_at(vars(-(c("Sample","Files"))), as.numeric)
+              dplyr::mutate_at(vars(-(c("Sample", "Files"))), as.numeric)
 
 
   }

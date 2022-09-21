@@ -6,7 +6,7 @@
 #'
 #' @import ComplexHeatmap
 #' @import dplyr
-#' @import readr
+#' @importFrom readr parse_number
 #' @import grid
 #' @import circlize
 #' @importFrom rlang .data

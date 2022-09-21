@@ -1,0 +1,86 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# SeqReport
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of SeqReport is to combine the reports from software used in DNA/RNA sequences quality control and alignment from multiple samples into one summarized table or plot. The idea is make it easier to compare samples before and after processing steps (e.g. trimming) and compare between different alignment parameter or software. Currently, combine the reports from [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/), [Bowtie 2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) and [BWA](http://bio-bwa.sourceforge.net/bwa.shtml). 
+
+## Installation
+
+You can install the development version of SeqReport from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("RaquelPinho/SeqReport")
+```
+
+## Example
+
+In this first example, I am showing how the FastQC report from multiple samples can be visualized in one plot:
+
+```{r example_fastqc}
+library(SeqReport)
+parent_dir <- file.path(system.file(paste0("extdata/testdata/"), package = "SeqReport"))
+fastqc_table <- readRDS(file.path(parent_dir, "test_fqc_table_samples.RDS"))
+fastqc_heatmap_stats(fastqc_table)
+```
+And summarized:
+
+```{r summary_fastqc}
+fastqc_report_summary(fastqc_table = fastqc_table,
+                      path = NULL,
+                      exclude = NULL)
+```
+
+The visualization of Bowtie2 and BWA alignment reports can also be done:
+
+### Bowtie
+
+```{r bowtie_heatmap, results = 'hide', message = FALSE, warning = FALSE}
+dir <- file.path(system.file(paste0("extdata/testdata/Bowtie/"), package = "SeqReport"))
+dt_bowtie <- bowtie_group_report(path = dir, samples = c("sp1", "sp2", "sp3"))
+bowtie_plot <- bowtie_heatmap(dt_bowtie)
+```
+```{r bowtie_plot_}
+bowtie_plot
+```
+```{r bowtie_summary}
+bowtie_report_summary(dt_bowtie = dt_bowtie,
+                          path = NULL,
+                          exclude = NULL)
+```
+
+### BWA
+
+```{r bwa_heatmap, results = 'hide', message = FALSE, warning = FALSE}
+dir <- file.path(system.file(paste0("extdata/testdata/BWA/"), package = "SeqReport"))
+dt_bwa <- bwa_report_group(path = dir, samples = c("sp1", "sp2", "sp3"))
+bwa_plot <- bwa_heatmap(dt_bwa)
+```
+```{r bwa_plot}
+bwa_plot
+```
+
+```{r bwa_summary}
+bwa_report_summary(dt_bwa = dt_bwa,
+                          path = NULL,
+                          exclude = NULL)
+```
+
+
+

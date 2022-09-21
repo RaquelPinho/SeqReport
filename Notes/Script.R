@@ -93,6 +93,7 @@ styler::style_file("R/bowtie_heatmap.R")
 lintr::lint_package()
 usethis::use_package("readr")
 usethis::use_package("circlize")
+usethis::use_test("bowtie_heatmap")
 
 # Creating function for the summary of the results for the Fastqc
 
@@ -128,10 +129,17 @@ devtools::check()
 
 usethis::use_r("bwa_report_group")
 devtools::document()
+usethis::use_test("bwa_report_group")
 
 # Creating function for the bwa_report_summary
 usethis::use_r("bwa_report_summary")
 devtools::document()
+usethis::use_test("bwa_report_summary")
 
 # Creating the function for the bwa_heatmap
 usethis::use_r("bwa_heatmap")
+usethis::use_readme_rmd()
+usethis::use_test("bwa_heatmap")
+usethis::use_package("vdiffr")
+lintr::linters_with_defaults()
+devtools::build_readme()

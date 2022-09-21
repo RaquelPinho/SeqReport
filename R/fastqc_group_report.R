@@ -5,7 +5,7 @@
 #' data_table.
 #'
 #' @import xml2
-#' @import rvest
+#' @importFrom rvest html_nodes
 #' @import dplyr
 #' @import tibble
 #'

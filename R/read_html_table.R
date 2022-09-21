@@ -2,7 +2,8 @@
 #'
 #' @description function to get the table from the html file and transpose it.
 #'
-#' @import tibble
+#' @importFrom tibble as_tibble
+#' @importFrom tibble is_tibble
 #' @import janitor
 #' @import  XML
 #'

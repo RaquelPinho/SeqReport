@@ -1,6 +1,6 @@
 #' bwa_heatmap
 #'
-#' @param dt_bwa data.frame or tibbles produced by the function bwa_group_report.
+#' @param dt_bwa data.frame or tibbles produced by the function bwa_report_group.
 #' @param total_reads if you would like to display the total number of reads for each sample.
 #' Default = TRUE.
 #' @param alignment_rate if you would like to display the alignment rate for each sample.
@@ -32,6 +32,22 @@
 #' @export
 #'
 #' @examples
+#'
+#' parent_testdata_dir <- file.path(system.file(paste0("extdata/testdata/"),
+#' package = "SeqReport" ))
+#' testdata_dir <- file.path(parent_testdata_dir, "BWA")
+#' dt_bwa_ex <- bwa_report_group(path = testdata_dir, suffix = ".txt",
+#' suffix_to_remove = "_report.txt",
+#' samples = NULL)
+#' bwa_heatmap(dt_bwa = dt_bwa_ex,
+#' total_reads = TRUE,
+#' alignment_rate = TRUE,
+#' samples = NULL,
+#' value = "raw",
+#' filter_samples = NULL,
+#' barplot = FALSE)
+#'
+#'
 bwa_heatmap <- function(dt_bwa = NULL,
                            total_reads = TRUE,
                            alignment_rate = TRUE,
@@ -77,32 +93,33 @@ bwa_heatmap <- function(dt_bwa = NULL,
             "maximum_length",
             "percentage_of_properly_paired_reads_(%)"
                     )
-  dt_bwa <- dt_bwa[,cols]
+  dt_bwa <- dt_bwa[, cols]
 
   # Getting the alignement rate
   dt_bwa <- dt_bwa %>%
-              dplyr::mutate(alignment_rate = round(reads_mapped / raw_total_sequences * 100,
+              dplyr::mutate(alignment_rate = round(.data$reads_mapped / .data$raw_total_sequences * 100,
                                                    digits = 2))
 
   # Getting columns of interest
 
   if (total_reads == FALSE) {
     dt_bwa <- dt_bwa %>%
-              dplyr::select(-raw_total_sequences)
+              dplyr::select(-.data$raw_total_sequences)
 
   }
   if (alignment_rate == FALSE) {
     dt_bwa <- dt_bwa %>%
-              dplyr::select(-alignment_rate)
+              dplyr::select(-.data$alignment_rate)
   }
   if (value == "percent") {
     dt_int <- dt_bwa %>%
-      dplyr::mutate(dplyr::across(-c(Sample,
-                                     raw_total_sequences,
-                                     average_length,
-                                     maximum_length,
-                                     alignment_rate,
-                                     `percentage_of_properly_paired_reads_(%)`),  ~ .x / raw_total_sequences * 100))
+      dplyr::mutate(dplyr::across(-c(.data$Sample,
+                                     .data$raw_total_sequences,
+                                     .data$average_length,
+                                     .data$maximum_length,
+                                     .data$alignment_rate,
+                                     .data$`percentage_of_properly_paired_reads_(%)`),
+                                      ~ .x / raw_total_sequences * 100))
   }
   if (value == "raw") {
     dt_int <- dt_bwa
@@ -212,6 +229,3 @@ bwa_heatmap <- function(dt_bwa = NULL,
   }
   return(htmp)
 }
-
-
-

@@ -16,10 +16,21 @@
 #' @importFrom mgsub mgsub
 #' @importFrom stats median
 #'
-#' @return
+#' @return A printed message with the summary of the statistical information on the reports.
+#'
 #' @export
 #'
 #' @examples
+#' parent_testdata_dir <- file.path(system.file(paste0("extdata/testdata/"),
+#' package = "SeqReport" ))
+#' testdata_dir <- file.path(parent_testdata_dir, "BWA")
+#' bwa_report_summary(path = testdata_dir, dt_bwa = NULL,
+#' suffix = ".txt",
+#' suffix_to_remove = "_report.txt",
+#' samples = NULL,
+#' exclude = NULL)
+#'
+#'
 bwa_report_summary <- function(path = NULL, dt_bwa = NULL,
                                suffix = ".txt",
                                suffix_to_remove = "_merged_panel_nt_report.txt",
@@ -29,7 +40,7 @@ bwa_report_summary <- function(path = NULL, dt_bwa = NULL,
     if (is.null(path)) {
       stop("Path and dt_bwa arguments are missing with no default.")
     } else {
-      dt_bwa <- bwa_group_report(
+      dt_bwa <- bwa_report_group(
         path = path,
         suffix = suffix,
         suffix_to_remove = suffix_to_remove,
@@ -55,8 +66,8 @@ bwa_report_summary <- function(path = NULL, dt_bwa = NULL,
   min_raw_total_sequences <- min(dt_bwa$raw_total_sequences)
   min_raw_total_sequences_samples <- dt_bwa$Sample[which(dt_bwa$raw_total_sequences == min_raw_total_sequences)]
   # Pairing information frequency of
-  paired_reads_prop <- dt_bwa$reads_paired/dt_bwa$raw_total_sequences
-  mean_paired_prop <- mean(paired_prop)
+  paired_reads_prop <- dt_bwa$reads_paired / dt_bwa$raw_total_sequences * 100
+  mean_paired_prop <- mean(paired_reads_prop)
   median_paired_prop <- stats::median(paired_reads_prop)
   max_paired_prop <- max(paired_reads_prop)
   max_paired_prop_samples <- dt_bwa$Sample[which(paired_reads_prop == max_paired_prop)]
@@ -74,7 +85,7 @@ bwa_report_summary <- function(path = NULL, dt_bwa = NULL,
   max_average_frag_length <- max(frag_length)
   min_average_frag_length <- min(frag_length)
   # Alignment rate stats
-  alig_rate <- as.double(gsub("%", "", dt_bwa$alignment_rate))
+  alig_rate <- dt_bwa$reads_mapped / dt_bwa$raw_total_sequences * 100
   mean_alig_rate <- mean(alig_rate)
   median_alig_rate <- stats::median(alig_rate)
   max_alig_rate <- max(alig_rate)
@@ -88,7 +99,7 @@ bwa_report_summary <- function(path = NULL, dt_bwa = NULL,
     min_alig_rate_samples <- "all"
   }
   # Inward directly mapping
-  alig_conc_rate <- as.double(dt_bwa$nward_oriented_pairs/ dt_bwa$reads_mapped_and_paired * 100)
+  alig_conc_rate <- as.double(dt_bwa$inward_oriented_pairs / (dt_bwa$reads_mapped_and_paired / 2) * 100)
   mean_alig_conc_rate <- mean(alig_conc_rate)
   median_alig_conc_rate <- median(alig_conc_rate)
   max_alig_conc_rate <- max(alig_conc_rate)
